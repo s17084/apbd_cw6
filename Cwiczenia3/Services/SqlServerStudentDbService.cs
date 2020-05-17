@@ -199,5 +199,41 @@ namespace Cwiczenia5.Services
                 return response;
             }
         }
+
+        public bool CheckIndex(string indexNumber)
+        {
+            using (var connection = new SqlConnection(sqlConnectionString))
+            using (var command = new SqlCommand())
+            {
+
+                if (connection.State == ConnectionState.Closed)
+                    connection.Open();
+
+                var transaction = connection.BeginTransaction();
+
+                command.Connection = connection;
+                command.Transaction = transaction;
+
+                try
+                {
+                    command.CommandText = "SELECT IndexNumber FROM Student WHERE IndexNumber=@IndexNumber";
+                    command.Parameters.AddWithValue("IndexNumber", indexNumber);
+                    command.CommandType = CommandType.Text;
+
+                    var existingIndexNumber = (string)command.ExecuteScalar();
+
+                    if (existingIndexNumber == null)
+                    {
+                        return false;
+                    }
+                }
+                catch (SqlException e)
+                {
+                    Console.WriteLine(e);
+                }
+
+                return true;
+            }
+        }
     }
 }

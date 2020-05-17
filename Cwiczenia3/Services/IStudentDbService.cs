@@ -11,5 +11,6 @@ namespace Cwiczenia5.Services
     {
         EnrollStudentResponse EnrollStudent(EnrollStudentRequest request);
         PromoteStudentsResponse PromoteStudents(PromoteStudentsRequest request);
+        bool CheckIndex(string indexNumber);
     }
 }
